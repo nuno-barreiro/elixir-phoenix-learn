@@ -1,5 +1,5 @@
 defmodule Cards do
-  def hello do
-    "Hello Elixir World!"
+  def create_deck do
+    ["Ace", "Two", "Three"]
   end
 end
