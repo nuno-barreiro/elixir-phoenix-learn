@@ -26,8 +26,12 @@ defmodule Cards do
   end
 
   def load(filename) do
-    { _, binary} = File.read(filename)
-    :erlang.binary_to_term(binary)
+    { status, binary} = File.read(filename)
+
+    case status do
+      :ok -> :erlang.binary_to_term(binary)
+      :error -> "Error reading the file"
+    end
   end
 
 end
