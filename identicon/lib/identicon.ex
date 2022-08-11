@@ -1,7 +1,7 @@
 defmodule Identicon do
 
   @doc """
-    Generates a 300x300 identicon based on a given string and saves it to the filesystem
+    Generates a 250x250 identicon based on a given string and saves it to the filesystem
   """
   def create(input) do
     input
@@ -9,7 +9,7 @@ defmodule Identicon do
     |> pick_color
     |> build_grid
     |> create_pixel_map
-    # |> convert_grid
+    |> draw_image
     # |> save_image
   end
 
@@ -133,8 +133,18 @@ defmodule Identicon do
     { top_left, bottom_right }
   end
 
-  # def convert_grid(input) do
-  # end
+  @doc """
+    Creates the identicon image using the pixel map and the picked color
+  """
+  def draw_image(%Identicon.Image{color: color, pixel_map: pixel_map}) do
+    image = :egd.create(250, 250)
+    fill = :egd.color(color)
+
+    # Erlang egd library mutates the image
+    Enum.each(pixel_map, fn({start, stop}) -> :egd.filledRectangle(image, start, stop, fill) end)
+
+    :egd.render(image)
+  end
 
   # def save_image(input) do
   # end
