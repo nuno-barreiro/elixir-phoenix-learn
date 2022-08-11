@@ -8,6 +8,7 @@ defmodule Identicon do
     |> compute_hash
     |> pick_color
     |> build_grid
+    |> create_pixel_map
     # |> convert_grid
     # |> save_image
   end
@@ -80,11 +81,12 @@ defmodule Identicon do
       }
   """
   def build_grid(%Identicon.Image{hex: hex} = input) do
-    grid = hex
-    |> Enum.chunk(3)
-    |> Enum.map(&mirror_row/1) # passing reference to the function
-    |> List.flatten
-    |> Enum.with_index
+    grid =
+      hex
+      |> Enum.chunk(3)
+      |> Enum.map(&mirror_row/1) # passing reference to the function
+      |> List.flatten
+      |> Enum.with_index
 
     %Identicon.Image{input | grid: grid}
   end
@@ -97,12 +99,44 @@ defmodule Identicon do
     row ++ [second, first]
   end
 
-  # def convert_grid(input) do
+  @doc """
+    Creates the pixel map for the image creation process
 
+    Examples:
+      iex>Identicon.create_pixel_map(%Identicon.Image{grid: [{97, 0}, {64, 1}, {154, 2}, {64, 3}, {97, 4}, {161, 5}]})
+      %Identicon.Image{
+        color: nil,
+        grid: [{97, 0}, {64, 1}, {154, 2}, {64, 3}, {97, 4}, {161, 5}],
+        hex: nil,
+        pixel_map: [
+          {{50, 0}, {100, 50}},
+          {{100, 0}, {150, 50}},
+          {{150, 0}, {200, 50}}
+        ]
+      }
+  """
+  def create_pixel_map(%Identicon.Image{grid: grid} = input) do
+    pixel_map =
+      Enum.filter(grid, fn({value, _index}) -> rem(value, 2) == 0 end) # filter odd squares that do not need paint
+      |> Enum.map(&calculate_coordinates/1)
+
+    %Identicon.Image{input | pixel_map: pixel_map}
+  end
+
+  defp calculate_coordinates({code, index}) do
+    horizontal = rem(index, 5) * 50
+    vertical = div(index, 5) * 50
+
+    top_left = { horizontal, vertical }
+    bottom_right = { horizontal + 50, vertical + 50 }
+
+    { top_left, bottom_right }
+  end
+
+  # def convert_grid(input) do
   # end
 
   # def save_image(input) do
-
   # end
 
 end
