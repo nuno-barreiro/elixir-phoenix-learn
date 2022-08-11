@@ -10,7 +10,7 @@ defmodule Identicon do
     |> build_grid
     |> create_pixel_map
     |> draw_image
-    # |> save_image
+    |> save_image(input)
   end
 
   @doc """
@@ -146,7 +146,8 @@ defmodule Identicon do
     :egd.render(image)
   end
 
-  # def save_image(input) do
-  # end
+  def save_image(image, filename) do
+    File.write("#{filename}.png", image)
+  end
 
 end
