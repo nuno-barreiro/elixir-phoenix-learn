@@ -18,14 +18,19 @@ defmodule Identicon do
 
     Example:
       iex> Identicon.compute_hash("John")
-      [97, 64, 154, 161, 253, 71, 212, 165, 51, 45, 226, 60, 191, 89, 163, 111]
+      %Identicon.Image{
+        hex: [97, 64, 154, 161, 253, 71, 212, 165, 51, 45, 226, 60, 191, 89, 163, 111]
+      }
   """
   def compute_hash(input) do
-    :crypto.hash(:md5, input)
+    hex = :crypto.hash(:md5, input)
     |> :binary.bin_to_list
+
+    %Identicon.Image{hex: hex}
   end
 
-  def list_numbers(input) do
+
+  def list_numbers(hashed_input) do
 
   end
 
