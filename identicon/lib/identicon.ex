@@ -6,7 +6,6 @@ defmodule Identicon do
   def create(input) do
     input
     |> compute_hash
-    |> list_numbers
     |> pick_color
     |> build_grid
     |> convert_grid
@@ -27,11 +26,6 @@ defmodule Identicon do
     |> :binary.bin_to_list
 
     %Identicon.Image{hex: hex}
-  end
-
-
-  def list_numbers(hashed_input) do
-
   end
 
   def pick_color(input) do
