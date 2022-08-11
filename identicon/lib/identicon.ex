@@ -13,27 +13,35 @@ defmodule Identicon do
     |> save_image
   end
 
-  defp compute_hash(input) do
+  @doc """
+    Computes the hash of a given input
+
+    Example:
+      iex> Identicon.compute_hash("John")
+      [97, 64, 154, 161, 253, 71, 212, 165, 51, 45, 226, 60, 191, 89, 163, 111]
+  """
+  def compute_hash(input) do
+    :crypto.hash(:md5, input)
+    |> :binary.bin_to_list
+  end
+
+  def list_numbers(input) do
 
   end
 
-  defp list_numbers(input) do
+  def pick_color(input) do
 
   end
 
-  defp pick_color(input) do
+  def build_grid(input) do
 
   end
 
-  defp build_grid(input) do
+  def convert_grid(input) do
 
   end
 
-  defp convert_grid(input) do
-
-  end
-
-  defp save_image(input) do
+  def save_image(input) do
 
   end
 
